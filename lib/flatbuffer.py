@@ -31,12 +31,16 @@ class CameraType(IntEnum):
     perspective = 0
     orthographic = 1
 
-
 # str - Strings
 # bytes - FlexBuffers
 # int - Integer
 # float - Numbers
 # dicts - Structs
+texture_info = {
+    "_type": flat.TextureInfo,
+    "index": int,
+    "texCoord": int
+}
 gltf_schema = {
     "_type": flat.Root,
     "accessors": [
@@ -108,7 +112,6 @@ gltf_schema = {
     ],
     "asset": {
         "_type": flat.Asset,
-        "name": str,
         "copyright": str,
         "generator": str,
         "version": str,
@@ -136,7 +139,7 @@ gltf_schema = {
             "byteStride": (int, 0),
             "target": (int, 34962),
             "extensions": bytes,
-            # "extras": bytes, # struct.error :\
+            "extras": bytes,
         }
     ],
     "extensionsRequired": [str],
@@ -185,9 +188,21 @@ gltf_schema = {
         {
             "_type": flat.Material,
             "name": str,
-            #"alphaMode": int,
-            #"alphaCutoff": float,
-            #"doubleSided": bool,
+            "alphaMode": int,
+            "alphaCutoff": float,
+            "doubleSided": bool,
+            "pbrMetallicRoughness": {
+                "_type": flat.MaterialPbrMetallicRoughness,
+                "baseColorFactor": [float],
+                "baseColorTexture": texture_info,
+                "metallicFactor": float,
+                "roughnessFactor": float,
+                "metallicRoughnessTexture": texture_info,
+                "extensions": bytes,
+                "extras": bytes,
+            },
+            "emissiveTexture": texture_info,
+            "emissiveFactor": [float],
             "extensions": bytes,
             "extras": bytes,
         }

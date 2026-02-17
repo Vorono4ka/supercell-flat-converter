@@ -1,4 +1,5 @@
 
+
 ///----------------------------------------------------------------------------
 /// The datatype of components in the attribute.
 /// gltf_detailedDescription: The datatype of components in the attribute.  All valid values correspond to WebGL enums.  The corresponding typed arrays are `Int8Array`, `Uint8Array`, `Int16Array`, `Uint16Array`, `Uint32Array`, and `Float32Array`, respectively.  5125 (UNSIGNED_INT) is only allowed when the accessor contains indices, i.e., the accessor is only referenced by `primitive.indices`.
@@ -13,7 +14,7 @@ enum ComponentType: uint {
 }
 
 /// "description": "Specifies if the attribute is a scalar, vector, or matrix."
-enum AccessorType: byte { //string
+enum AccessorType: ubyte { //string
 	SCALAR,
 	VEC2,
 	VEC3,
@@ -22,6 +23,7 @@ enum AccessorType: byte { //string
 	MAT3,
 	MAT4
 }
+
 
 table AccessorSparseIndices {
 	/// "description": "The index of the bufferView with sparse indices. Referenced bufferView can't have ARRAY_BUFFER or ELEMENT_ARRAY_BUFFER target."
@@ -39,9 +41,10 @@ table AccessorSparseIndices {
 	extras: [ubyte](flexbuffer);
 }
 
+
 table AccessorSparseValues {
 	/// "description": "The index of the bufferView with sparse values. Referenced bufferView can't have ARRAY_BUFFER or ELEMENT_ARRAY_BUFFER target."
-	bufferView: int = -1; //glTFid
+	bufferView: uint; //glTFid
 
 	/// "description": "The offset relative to the start of the bufferView in bytes. Must be aligned."
 	byteOffset: int = 0; //uint
@@ -59,7 +62,7 @@ table AccessorSparse {
 	/// "description": "Number of entries stored in the sparse array."
 	/// "gltf_detailedDescription": "The number of attributes encoded in this sparse accessor."
 	/// "minimum": 1
-	count: int; //uint
+	count: int;
 
 	/// "description": "Index array of size `count` that points to those accessor attributes that deviate from their initialization value. Indices must strictly increase."
 	indices: AccessorSparseIndices(required);
@@ -80,24 +83,20 @@ table Accessor
 	/// "description": "The index of the bufferView."
 	/// "gltf_detailedDescription": "The index of the bufferView. When not defined, accessor must be initialized with zeros; `sparse` property or extensions could override zeros with actual values."    
 	bufferView: int = -1; //glTFid
-	// 4 OK
 
 	/// "description": "The offset relative to the start of the bufferView in bytes."
 	/// "gltf_detailedDescription": "The offset relative to the start of the bufferView in bytes.  This must be a multiple of the size of the component datatype."
 	/// "gltf_webgl": "`vertexAttribPointer()` offset parameter"
-	byteOffset: int = 0; //uint
-	// 6 OK
+	byteOffset: uint = 0;
 
 	/// "description": "The datatype of components in the attribute."
 	/// "gltf_detailedDescription": "The datatype of components in the attribute.  All valid values correspond to WebGL enums.  The corresponding typed arrays are `Int8Array`, `Uint8Array`, `Int16Array`, `Uint16Array`, `Uint32Array`, and `Float32Array`, respectively.  5125 (UNSIGNED_INT) is only allowed when the accessor contains indices, i.e., the accessor is only referenced by `primitive.indices`."
 	/// "gltf_webgl": "`vertexAttribPointer()` type parameter"
 	componentType: ComponentType = BYTE;
-	// 8 OK
 
 	/// "description": "The number of attributes referenced by this accessor."
 	/// "gltf_detailedDescription": "The number of attributes referenced by this accessor, not to be confused with the number of bytes or number of components."
-	count: int = 0; //uint
-	// 10 OK
+	count: uint = 0;
 
 	/// "description": "Sparse storage of attributes that deviate from their initialization value."
 	sparse: AccessorSparse;
@@ -111,14 +110,12 @@ table Accessor
 	/// "maxItems": 16,
 	/// "gltf_detailedDescription": "Maximum value of each component in this attribute.  Array elements must be treated as having the same data type as accessor's `componentType`. Both min and max arrays have the same length.  The length is determined by the value of the type property; it can be 1, 2, 3, 4, 9, or 16.\n\n`normalized` property has no effect on array values: they always correspond to the actual values stored in the buffer. When accessor is sparse, this property must contain max values of accessor data with sparse substitution applied."
 	max: [float]; // Number
-	// 16 OK
 
 	/// "description": "Minimum value of each component in this attribute."
 	/// "minItems": 1,
 	/// "maxItems": 16,
 	/// "gltf_detailedDescription": "Minimum value of each component in this attribute.  Array elements must be treated as having the same data type as accessor's `componentType`. Both min and max arrays have the same length.  The length is determined by the value of the type property; it can be 1, 2, 3, 4, 9, or 16.\n\n`normalized` property has no effect on array values: they always correspond to the actual values stored in the buffer. When accessor is sparse, this property must contain min values of accessor data with sparse substitution applied."
 	min: [float]; // Number
-	// 18 OK
 
 	/// Dictionary object with extension-specific objects.
 	extensions: [ubyte](flexbuffer);
@@ -133,7 +130,6 @@ table Accessor
 
 	/// "description": "Specifies if the attribute is a scalar, vector, or matrix."
 	type: AccessorType = SCALAR;
-	// 26 OK
 }
 
 ///----------------------------------------------------------------------------
@@ -142,9 +138,8 @@ table Accessor
 /// Metadata about the glTF asset.
 table Asset 
 {
-	/// The user-defined name of this object.
-	/// gltf_detailedDescription: The user-defined name of this object.  This is not necessarily unique, e.g., an accessor and a buffer could have the same name, or two accessors could even have the same name.
-	name: string;
+	/// A copyright message suitable for display to credit the content creator.
+	copyright: string;
 
 	/// Dictionary object with extension-specific objects.
 	extensions: [ubyte](flexbuffer);
@@ -154,7 +149,6 @@ table Asset
 
 	/// Tool that generated this glTF model.  Useful for debugging.
 	generator: string;
-	// 10 OK
 	
 	/// The minimum glTF version that this asset targets.
 	/// pattern": "^[0-9]+\\.[0-9]+$
@@ -163,16 +157,12 @@ table Asset
 	/// The glTF version that this asset targets.
 	/// pattern: "^[0-9]+\\.[0-9]+$"
 	version: string(required);
-	// 14 OK
-
-	/// A copyright message suitable for display to credit the content creator.
-	copyright: string;
 }
 
 ///----------------------------------------------------------------------------
 
 /// "description": "The name of the node's TRS property to modify, or the \"weights\" of the Morph Targets it instantiates."
-enum AnimationChannelTargetPath: byte { //string
+enum AnimationChannelTargetPath: ubyte { //string
 	translation,
 	rotation,
 	scale,
@@ -190,11 +180,9 @@ table AnimationChannelTarget {
 
 	/// "description": "The index of the node to target."
 	node: int = -1; //glTFid
-	// 8 OK
 
 	/// "description": "The name of the node's TRS property to modify, or the \"weights\" of the Morph Targets it instantiates."
 	path: AnimationChannelTargetPath = translation;
-	// 10 OK
 }
 
 
@@ -210,23 +198,19 @@ table AnimationChannel {
 	/// "description": "The index of a sampler in this animation used to compute the value for the target."
 	/// "gltf_detailedDescription": "The index of a sampler in this animation used to compute the value for the target, e.g., a node's translation, rotation, or scale (TRS)."
 	sampler: int; //glTFid
-	// 8 OK
 
 	/// "description": "The index of the node and TRS property to target."
     target: AnimationChannelTarget(required);
-	// 10 OK
 }
 
 
 /// "description": "Interpolation algorithm."
 /// "gltf_detailedDescription": "Interpolation algorithm."
-enum AnimationSamplerInterpolationAlgorithm: byte { // string
+enum AnimationSamplerInterpolationAlgorithm: ubyte { // string
 	/// "description": "The animated values are linearly interpolated between keyframes. When targeting a rotation, spherical linear interpolation (slerp) should be used to interpolate quaternions. The number output of elements must equal the number of input elements."
 	LINEAR,
 	/// "description": "The animated values remain constant to the output of the first keyframe, until the next keyframe. The number of output elements must equal the number of input elements."
 	STEP,
-	/// "description": "The animation's interpolation is computed using a uniform Catmull-Rom spline. The number of output elements must equal two more than the number of input elements. The first and last output elements represent the start and end tangents of the spline. There must be at least four keyframes when using this interpolation."
-	CATMULLROMSPLINE,
 	/// "description": "The animation's interpolation is computed using a cubic spline with specified tangents. The number of output elements must equal three times the number of input elements. For each input element, the output stores three elements, an in-tangent, a spline vertex, and an out-tangent. There must be at least two keyframes when using this interpolation."
 	CUBICSPLINE,
 }
@@ -234,7 +218,6 @@ enum AnimationSamplerInterpolationAlgorithm: byte { // string
 /// Animation Sampler
 /// "description": "Combines input and output accessors with an interpolation algorithm to define a keyframe graph (but not its target)."
 table AnimationSampler {
-
 	/// Application-specific data.
 	extras: [ubyte](flexbuffer);
 
@@ -244,26 +227,21 @@ table AnimationSampler {
 	/// "description": "The index of an accessor containing keyframe input values, e.g., time."
 	/// "gltf_detailedDescription": "The index of an accessor containing keyframe input values, e.g., time. That accessor must have componentType `FLOAT`. The values represent time in seconds with `time[0] >= 0.0`, and strictly increasing values, i.e., `time[n + 1] > time[n]`."
 	input: int; //glTFid
-	// 8 OK
 
 	/// "description": "Interpolation algorithm."
 	/// "gltf_detailedDescription": "Interpolation algorithm."
 	interpolation: AnimationSamplerInterpolationAlgorithm = LINEAR;
-	// 10 OK
 
 	/// "description": "The index of an accessor, containing keyframe output values."
 	/// "gltf_detailedDescription": "The index of an accessor containing keyframe output values. When targeting TRS target, the `accessor.componentType` of the output values must be `FLOAT`. When targeting morph weights, the `accessor.componentType` of the output values must be `FLOAT` or normalized integer where each output element stores values with a count equal to the number of morph targets."
 	output: int; //glTFid
-	// 12 OK
 }
 
 /// Animation
 /// "description": "A keyframe animation."
 table Animation {
-
 	/// "description": "An array of channels, each of which targets an animation's sampler at a node's property. Different channels of the same animation can't have equal targets."
 	channels: [AnimationChannel](required);
-	// 4 OK
 
 	/// Dictionary object with extension-specific objects.
 	extensions: [ubyte](flexbuffer);
@@ -274,11 +252,9 @@ table Animation {
 	/// The user-defined name of this object.
 	/// gltf_detailedDescription: The user-defined name of this object.  This is not necessarily unique, e.g., an accessor and a buffer could have the same name, or two accessors could even have the same name.
 	name: string;
-	// 10 OK
 
 	/// "description": "An array of samplers that combines input and output accessors with an interpolation algorithm to define a keyframe graph (but not its target)."
 	samplers: [AnimationSampler](required);
-	// 12 OK
 }
 
 ///----------------------------------------------------------------------------
@@ -288,7 +264,6 @@ table Animation {
 table Buffer {
 	/// "description": "The length of the buffer in bytes."
 	byteLength: uint = 0;
-	// 4 OK
 
 	/// "description": "The uri of the buffer."
 	/// "format": "uriref"
@@ -311,29 +286,23 @@ table Buffer {
 
 /// "description": "The target that the GPU buffer should be bound to."
 /// "gltf_webgl": "`bindBuffer()`"
-enum BufferViewTarget: int {
+enum BufferViewTarget: uint {
 	ARRAY_BUFFER = 34962,
 	ELEMENT_ARRAY_BUFFER = 34963,
-
-	/// originally added for flatgltf
-	UNIFORM_BUFFER = 35345,
 }
 
 /// Buffer View
 /// "description": "A view into a buffer generally representing a subset of the buffer."
 table BufferView {
 	/// "description": "The index of the buffer."
-	buffer: uint  = 0; //glTFid
-	// 4 OK
+	buffer: int = -1; //glTFid
 
 	// "description": "The length of the bufferView in bytes."
 	// "minimum": 1
 	byteLength: uint; //uint
-	// 6 OK
 
 	/// "description": "The offset into the buffer in bytes."
 	byteOffset: uint = 0; //uint
-	// 8 OK
 
 	/// "description": "The stride, in bytes."
 	/// "minimum": 4
@@ -342,12 +311,6 @@ table BufferView {
 	/// "gltf_detailedDescription": "The stride, in bytes, between vertex attributes.  When this is not defined, data is tightly packed. When two or more accessors use the same bufferView, this field must be defined."
 	/// "gltf_webgl": "`vertexAttribPointer()` stride parameter"
 	byteStride: uint; //uint
-	// 10 OK
-            
-	/// "description": "The target that the GPU buffer should be bound to."
-	/// "gltf_webgl": "`bindBuffer()`"     
-    target: BufferViewTarget = ARRAY_BUFFER; // BufferViewTarget = UNIFORM_BUFFER;
-	// 12 OK
 
 	/// The user-defined name of this object.
 	/// gltf_detailedDescription: The user-defined name of this object.  This is not necessarily unique, e.g., an accessor and a buffer could have the same name, or two accessors could even have the same name.
@@ -358,6 +321,10 @@ table BufferView {
 
 	/// Application-specific data.
 	extras: [ubyte](flexbuffer);
+
+	/// "description": "The target that the GPU buffer should be bound to."
+	/// "gltf_webgl": "`bindBuffer()`"     
+    target: BufferViewTarget = ARRAY_BUFFER; // BufferViewTarget = UNIFORM_BUFFER;
 }
 
 ///----------------------------------------------------------------------------
@@ -390,7 +357,6 @@ table CameraPerspective {
 	/// "description": "The floating-point aspect ratio of the field of view."
 	/// "gltf_detailedDescription": "The floating-point aspect ratio of the field of view. When this is undefined, the aspect ratio of the canvas is used."
 	aspectRatio: float; // Number
-	// 4 OK
 
 	/// Dictionary object with extension-specific objects.
 	extensions: [ubyte](flexbuffer);
@@ -400,24 +366,21 @@ table CameraPerspective {
 
 	/// "description": "The floating-point vertical field of view in radians."
 	yfov: float; // Number
-	// 10 OK
 	
 	/// "description": "The floating-point distance to the far clipping plane."
 	/// "gltf_detailedDescription": "The floating-point distance to the far clipping plane. When defined, `zfar` must be greater than `znear`. If `zfar` is undefined, runtime must use infinite projection matrix."
 	zfar: float; // Number
-	// 12 OK
 
 	/// "description": "The floating-point distance to the near clipping plane."
 	/// "gltf_detailedDescription": "The floating-point distance to the near clipping plane."
 	znear: float; // Number
-	// 14 OK
 }
 
 /// "description": "Specifies if the camera uses a perspective or orthographic projection."
 /// "gltf_detailedDescription": "Specifies if the camera uses a perspective or orthographic projection.  Based on this, either the camera's `perspective` or `orthographic` property will be defined."
-enum CameraType: short {//string
+enum CameraType: ushort {//string
+	orthographic = 0,
 	perspective,
-	orthographic,
 }
 
 table Camera {
@@ -430,20 +393,16 @@ table Camera {
 	/// "description": "Specifies if the camera uses a perspective or orthographic projection."
 	/// "gltf_detailedDescription": "Specifies if the camera uses a perspective or orthographic projection.  Based on this, either the camera's `perspective` or `orthographic` property will be defined."
 	type: CameraType;
-	// 8 OK
 
 	/// The user-defined name of this object.
 	/// gltf_detailedDescription: The user-defined name of this object.  This is not necessarily unique, e.g., an accessor and a buffer could have the same name, or two accessors could even have the same name.
 	name: string;
-	// 10
 
 	/// "description": "A perspective camera containing properties to create a perspective projection matrix."
 	perspective: CameraPerspective;
-	// 12 OK
-	
+
 	/// "description": "An orthographic camera containing properties to create an orthographic projection matrix."
 	orthographic: CameraOrthographic;
-	// 14
 }
 
 ///----------------------------------------------------------------------------
@@ -463,19 +422,16 @@ table Image {
 	/// "description": "The image's MIME type."
 	/// NOTE: JsonSchema states enum { "image/jpeg" "image/png" }, but this type of variables are not possible with flatbuffers, hence keeping the mimeType as string
 	mimeType: string;
-	// 10 OK
 
 	/// The user-defined name of this object.
 	/// gltf_detailedDescription: The user-defined name of this object.  This is not necessarily unique, e.g., an accessor and a buffer could have the same name, or two accessors could even have the same name.
 	name: string;
-	// 12 OK
 
 	/// "description": "The uri of the image."
 	/// "gltf_detailedDescription": "The uri of the image.  Relative paths are relative to the .gltf file.  Instead of referencing an external file, the uri can also be a data-uri.  The image format must be jpg or png."
 	/// "gltf_uriType": "image"
 	/// "format": "uriref"
 	uri: string;
-	// 14 OK
 }
 
 ///----------------------------------------------------------------------------
@@ -581,7 +537,7 @@ table MaterialPbrMetallicRoughness {
 
 /// "description": "The alpha rendering mode of the material."
 /// "gltf_detailedDescription": "The material's alpha rendering mode enumeration specifying the interpretation of the alpha value of the main factor and texture."
-enum MaterialAlphaMode: short {
+enum MaterialAlphaMode: ushort {
 	/// "description": "The alpha value is ignored and the rendered output is fully opaque."
 	OPAQUE,
 	
@@ -597,22 +553,18 @@ enum MaterialAlphaMode: short {
 table Material {
 	/// "description": "A set of parameter values that are used to define the metallic-roughness material model from Physically-Based Rendering (PBR) methodology. When not specified, all the default values of `pbrMetallicRoughness` apply."
 	pbrMetallicRoughness: MaterialPbrMetallicRoughness;
-	// 4
 
 	/// "description": "The normal map texture."
 	/// "gltf_detailedDescription": "A tangent space normal map. The texture contains RGB components in linear space. Each texel represents the XYZ components of a normal vector in tangent space. Red [0 to 255] maps to X [-1 to 1]. Green [0 to 255] maps to Y [-1 to 1]. Blue [128 to 255] maps to Z [1/255 to 1]. The normal vectors use OpenGL conventions where +X is right and +Y is up. +Z points toward the viewer. In GLSL, this vector would be unpacked like so: `float3 normalVector = tex2D(<sampled normal map texture value>, texCoord) * 2 - 1`."
 	normalTexture: MaterialNormalTextureInfo;
-	// 6
 	
 	/// "description": "The occlusion map texture."
 	/// "gltf_detailedDescription": "The occlusion map texture. The occlusion values are sampled from the R channel. Higher values indicate areas that should receive full indirect lighting and lower values indicate no indirect lighting. These values are linear. If other channels are present (GBA), they are ignored for occlusion calculations."
 	occlusionTexture: MaterialOcclusionTextureInfo;
-	// 8
 
 	/// "description": "The emissive map texture."
 	/// "gltf_detailedDescription": "The emissive map controls the color and intensity of the light being emitted by the material. This texture contains RGB components in sRGB color space. If a fourth component (A) is present, it is ignored."
 	emissiveTexture: TextureInfo;
-	// 10
 
 	/// "description": "The emissive color of the material."
 	/// "gltf_detailedDescription": "The RGB components of the emissive color of the material. These values are linear. If an emissiveTexture is specified, this value is multiplied with the texel values."
@@ -620,35 +572,28 @@ table Material {
 	/// "maxItems": 3,
 	/// "default": [ 0.0, 0.0, 0.0 ],
 	emissiveFactor: [float]; // Number
-	// 12
 	
 	/// Dictionary object with extension-specific objects.
 	extensions: [ubyte](flexbuffer);
-	// 14 OK
 
 	/// Application-specific data.
 	extras: [ubyte](flexbuffer);
-	// 16 OK
 
 	/// "description": "Specifies whether the material is double sided."
 	/// "gltf_detailedDescription": "Specifies whether the material is double sided. When this value is false, back-face culling is enabled. When this value is true, back-face culling is disabled and double sided lighting is enabled. The back-face must have its normals reversed before the lighting equation is evaluated."
 	doubleSided: bool = false;
-	// 18
 
 	/// The user-defined name of this object.
 	/// gltf_detailedDescription: The user-defined name of this object.  This is not necessarily unique, e.g., an accessor and a buffer could have the same name, or two accessors could even have the same name.
 	name: string;
-	// 20
 
 	/// "description": "The alpha cutoff value of the material."
 	/// "gltf_detailedDescription": "Specifies the cutoff threshold when in `MASK` mode. If the alpha value is greater than or equal to this value then it is rendered as fully opaque, otherwise, it is rendered as fully transparent. A value greater than 1.0 will render the entire material as fully transparent. This value is ignored for other modes."
 	alphaCutoff: float = 0.5; // Number
-	// 22
 
 	/// "description": "The alpha rendering mode of the material."
 	/// "gltf_detailedDescription": "The material's alpha rendering mode enumeration specifying the interpretation of the alpha value of the main factor and texture."
 	alphaMode: MaterialAlphaMode = OPAQUE;
-	// 24
 }
 
 ///----------------------------------------------------------------------------
@@ -675,35 +620,27 @@ table MeshPrimitive {
 	/// "description": "A dictionary object, where each key corresponds to mesh attribute semantic and each value is the index of the accessor containing attribute's data."
 	///! NOTE: dictionary objects are not possible with flatbuffers (yet), hence this workaround
 	attributes: [ubyte](flexbuffer, required);
-	// 4 OK
 
 	/// Dictionary object with extension-specific objects.
 	extensions: [ubyte](flexbuffer);
-	// 6 OK
 
 	/// "description": "An array of Morph Targets, each  Morph Target is a dictionary mapping attributes (only `POSITION`, `NORMAL`, and `TANGENT` supported) to their deviations in the Morph Target."
 	/// "description": "A dictionary object specifying attributes displacements in a Morph Target, where each key corresponds to one of the three supported attribute semantic (`POSITION`, `NORMAL`, or `TANGENT`) and each value is the index of the accessor containing the attribute displacements' data."
 	targets: [ubyte](flexbuffer);
-	// 8 OK
 
 	/// "description": "The index of the accessor that contains the indices."
 	/// "gltf_detailedDescription": "The index of the accessor that contains mesh indices.  When this is not defined, the primitives should be rendered without indices using `drawArrays()`.  When defined, the accessor must contain indices: the `bufferView` referenced by the accessor should have a `target` equal to 34963 (ELEMENT_ARRAY_BUFFER); `componentType` must be 5121 (UNSIGNED_BYTE), 5123 (UNSIGNED_SHORT) or 5125 (UNSIGNED_INT), the latter may require enabling additional hardware support; `type` must be `\"SCALAR\"`. For triangle primitives, the front face has a counter-clockwise (CCW) winding order."
 	indices: int = -1; //glTFid
-	// 10 OK
 
 	/// "description": "The index of the material to apply to this primitive when rendering."
 	material: int = -1; //glTFid
-	// 12 OK
 
 	/// "description": "The type of primitives to render."
 	/// "gltf_detailedDescription": "The type of primitives to render. All valid values correspond to WebGL enums."
 	mode: MeshPrimitiveMode = TRIANGLES;
-	// 14
 
 	/// Application-specific data.
 	extras: [ubyte](flexbuffer);
-	// 16
-
 }
 
 /// Mesh
@@ -711,24 +648,19 @@ table MeshPrimitive {
 table Mesh {
 	/// Dictionary object with extension-specific objects.
 	extensions: [ubyte](flexbuffer);
-	// 4
 	
 	/// Application-specific data.
 	extras: [ubyte](flexbuffer);
-	// 6
 
 	/// The user-defined name of this object.
 	/// gltf_detailedDescription: The user-defined name of this object.  This is not necessarily unique, e.g., an accessor and a buffer could have the same name, or two accessors could even have the same name.
 	name: string;
-	// 8 OK
 
 	/// "description": "An array of primitives, each defining geometry to be rendered with a material."
 	primitives: [MeshPrimitive](required);
-	// 10 OK
 
 	/// "description": "Array of weights to be applied to the Morph Targets."
 	weights: [float]; // Number
-	// 12
 }
 
 ///----------------------------------------------------------------------------
@@ -738,11 +670,9 @@ table Mesh {
 table Node {
 	/// "description": "The index of the camera referenced by this node."
 	camera: int = -1; //glTFid
-	// 4 OK
 	
 	/// "description": "The indices of this node's children."
 	children: [int]; //glTFid
-	// 6 OK
 	
 	/// Dictionary object with extension-specific objects.
 	extensions: [ubyte](flexbuffer);
@@ -756,12 +686,10 @@ table Node {
 
 	/// "description": "The index of the mesh in this node."
 	mesh: int = -1; //glTFid
-	// 14 OK
 
 	/// The user-defined name of this object.
 	/// gltf_detailedDescription: The user-defined name of this object.  This is not necessarily unique, e.g., an accessor and a buffer could have the same name, or two accessors could even have the same name.
 	name: string;
-	// 16 OK
 	
 	/// "description": "The node's unit quaternion rotation in the order (x, y, z, w), where w is the scalar."
 	/// "minimum": -1.0
@@ -770,25 +698,21 @@ table Node {
 	/// "maxItems": 4
 	/// "default": [ 0.0, 0.0, 0.0, 1.0 ]
 	rotation: [float]; // Number
-	// 18 OK
 
 	/// "description": "The node's non-uniform scale."
 	/// "minItems": 3
 	/// "maxItems": 3
 	/// "default": [ 1.0, 1.0, 1.0 ]
 	scale: [float]; // Number
-	// 20 OK
 
 	/// "description": "The index of the skin referenced by this node."
 	skin: int = -1; //glTFid
-	// 22 OK
 
 	/// "description": "The node's translation."
 	/// "minItems": 3
 	/// "maxItems": 3
 	/// "default": [ 0.0, 0.0, 0.0 ]
 	translation: [float]; // Number
-	// 24 OK
 
 	/// "description": "A floating-point 4x4 transformation matrix stored in column-major order."
 	/// "gltf_detailedDescription": "A floating-point 4x4 transformation matrix stored in column-major order."
@@ -816,13 +740,13 @@ table Scene {
 
 	/// "description": "The indices of each root node."
 	nodes: [int]; //glTFid
-	// 10 OK
 }
 
 ///----------------------------------------------------------------------------
 
 /// "gltf_detailedDescription": "All valid values correspond to WebGL enums."
 enum SamplerFilter: ushort {
+	NONE = 0,
 	NEAREST = 9728,
 	LINEAR = 9729,
 	NEAREST_MIPMAP_NEAREST = 9984,
@@ -832,7 +756,7 @@ enum SamplerFilter: ushort {
 }
 
 /// "gltf_detailedDescription": "All valid values correspond to WebGL enums."
-enum WrapMode: int {
+enum WrapMode: ushort {
 	REPEAT = 10497,
 	CLAMP_TO_EDGE = 33071,
 	MIRRORED_REPEAT = 33648,
@@ -846,25 +770,21 @@ table Sampler {
 	/// "gltf_detailedDescription": "s wrapping mode.  All valid values correspond to WebGL enums."
 	/// "gltf_webgl": "`texParameterf()` with pname equal to TEXTURE_WRAP_S"
 	wrapS: WrapMode = REPEAT;
-	// 4 OK
 
 	/// "description": "t wrapping mode."
 	/// "gltf_detailedDescription": "t wrapping mode.  All valid values correspond to WebGL enums."
 	/// "gltf_webgl": "`texParameterf()` with pname equal to TEXTURE_WRAP_T"
 	wrapT: WrapMode = REPEAT;
-	// 6 OK
 
 	/// "description": "Magnification filter."
 	/// "gltf_detailedDescription": "Magnification filter.  Valid values correspond to WebGL enums: `9728` (NEAREST) and `9729` (LINEAR)."
 	/// "gltf_webgl": "`texParameterf()` with pname equal to TEXTURE_MAG_FILTER"
-	magFilter: SamplerFilter = NEAREST;
-	// 8 OK
+	magFilter: SamplerFilter = NONE;
 
 	/// "description": "Minification filter."
 	/// "gltf_detailedDescription": "Minification filter.  All valid values correspond to WebGL enums."
 	/// "gltf_webgl": "`texParameterf()` with pname equal to TEXTURE_MIN_FILTER"
-	minFilter: SamplerFilter = NEAREST;
-	// 10 OK
+	minFilter: SamplerFilter = NONE;
 
 	/// The user-defined name of this object.
 	/// gltf_detailedDescription: The user-defined name of this object.  This is not necessarily unique, e.g., an accessor and a buffer could have the same name, or two accessors could even have the same name.
@@ -895,11 +815,9 @@ table Texture {
 
 	/// "description": "The index of the sampler used by this texture. When undefined, a sampler with repeat wrapping and auto filtering should be used."
 	sampler: int = -1; //glTFid
-	// 10 OK
 
 	/// "description": "The index of the image used by this texture."
 	source: int = -1; //glTFid
-	// 12 OK
 }
 
 ///----------------------------------------------------------------------------
@@ -915,17 +833,14 @@ table Skin {
 
 	/// "description": "The index of the accessor containing the floating-point 4x4 inverse-bind matrices.  The default is that each matrix is a 4x4 identity matrix, which implies that inverse-bind matrices were pre-applied."
 	inverseBindMatrices: int = -1; //glTFid
-	// 8 OK
 
 	/// "description": "Indices of skeleton nodes, used as joints in this skin."
 	/// "gltf_detailedDescription": "Indices of skeleton nodes, used as joints in this skin.  The array length must be the same as the `count` property of the `inverseBindMatrices` accessor (when defined)."
 	joints: [int](required); //glTFid
-	// 10 OK
 
 	/// The user-defined name of this object.
 	/// gltf_detailedDescription: The user-defined name of this object.  This is not necessarily unique, e.g., an accessor and a buffer could have the same name, or two accessors could even have the same name.
 	name: string;
-	// 12 OK
 	
 	/// "description": "The index of the node used as a skeleton root. When undefined, joints transforms resolve to scene root."
 	skeleton: int = -1; //glTFid
@@ -938,88 +853,69 @@ table Root {
 	/// An array of accessors.
 	/// gltf_detailedDescription: An array of accessors.  An accessor is a typed view into a bufferView.
 	accessors: [Accessor];
-	// 4 OK
 
 	/// An array of keyframe animations.
 	animations: [Animation];
-	// 6 OK
 
 	/// Metadata about the glTF asset.
 	asset: Asset;
-	// 8 OK
 
 	/// An array of bufferViews.
 	/// gltf_detailedDescription: An array of bufferViews.  A bufferView is a view into a buffer generally representing a subset of the buffer.
 	bufferViews: [BufferView];
-	// 10 OK
 
 	/// An array of buffers.
 	/// gltf_detailedDescription: An array of buffers.  A buffer points to binary geometry, animation, or skins.
 	buffers: [Buffer];
-	// 12 OK
 
 	/// An array of cameras.
 	/// gltf_detailedDescription: An array of cameras.  A camera defines a projection matrix.
 	cameras: [Camera];
-	// 14 OK
 
 	///-- glTFProperty
 	/// Dictionary object with extension-specific objects.
 	extensions: [ubyte](flexbuffer);
-	// 16
 
 	/// Names of glTF extensions required to properly load this asset.
 	extensionsRequired: [string];
-	// 18 OK
 
 	/// Names of glTF extensions used somewhere in this asset.
 	extensionsUsed: [string];
-	// 20 OK
 
 	/// Application-specific data.
 	extras: [ubyte](flexbuffer);
-	// 22
 
 	/// An array of images.
 	/// gltf_detailedDescription: An array of images.  An image defines data used to create a texture.
 	images: [Image];
-	// 24 OK
 
 	/// An array of materials.
 	/// gltf_detailedDescription: An array of materials.  A material defines the appearance of a primitive.
 	materials: [Material];
-	// 26 OK
 	
 	/// An array of meshes.
 	/// gltf_detailedDescription: An array of meshes.  A mesh is a set of primitives to be rendered.
 	meshes: [Mesh];
-	// 28 OK
 
 	/// An array of nodes.
 	nodes: [Node];
-	// 30 OK
 
 	/// An array of samplers.
 	/// gltf_detailedDescription: An array of samplers.  A sampler contains properties for texture filtering and wrapping modes.
 	samplers: [Sampler];
-	// 32 OK
 	
 	/// The index of the default scene.
 	scene: int = -1; //glTFid
-	// 34 OK
 
 	/// An array of scenes.
 	scenes: [Scene];
-	// 36 OK
 
 	/// An array of skins.
 	/// gltf_detailedDescription: An array of skins.  A skin is defined by joints and matrices.
 	skins: [Skin];
-	// 38 OK
 
 	/// An array of textures.
 	textures: [Texture];
-	// 40 OK
 }
 
 root_type Root;
