@@ -604,6 +604,16 @@ class SupercellOdinGLTF:
             offset = bufferView.get("byteOffset", 0)
             length = bufferView.get("byteLength")
 
+            valid = True
+            if (offset >= len(data)):
+                valid = False
+                
+            if (offset + length >= len(data)):
+                valid = False
+                
+            if (not valid):
+                continue
+            
             stream.seek(offset)
             data = stream.read_bytes(length)
 
